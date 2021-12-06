@@ -1,7 +1,7 @@
 # GoblinEscape
 Simple pygame representation of a math puzzle.
 
-This is inspired and based off hackerpoets youtube video and github repository.
+This was inspired by hackerpoets youtube video and based off his initial repository.
 
 To see what this code is about, check out Hackerpoet's video:
  - https://youtu.be/V0V3LMK40iI
