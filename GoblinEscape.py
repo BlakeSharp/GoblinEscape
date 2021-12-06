@@ -19,6 +19,8 @@ clicking = False
 #main menu click
 click = False
 Shape = None
+goblinx = 97.5
+gobliny = 0.0
 
 def draw_text(text, font, color, surface, x, y):
 	textobj = font.render(text, 1, color)
@@ -86,6 +88,8 @@ pygame.init()
 window = pygame.display.set_mode((width, height)) 
 pygame.display.set_caption("Goblin Game")
 
+
+##this is all the circle portion of the code
 def clearCircle():
 	radius_mult = bspeed / gspeeds[gspeed_ix]
 	#window color
@@ -94,42 +98,9 @@ def clearCircle():
 	pygame.draw.circle(window, (115, 151, 193), (int(width/2), int(height/2)), int(radius*1.00), 0)
 	#inner circle
 	pygame.draw.circle(window, (200,200,200), (int(width/2), int(height/2)), int(radius*radius_mult), 1)
-def clearSquare():
-	radius_mult = bspeed / gspeeds[gspeed_ix]
-	#window color
-	window.fill((222, 232, 252))
-	#lake circle
-	pygame.draw.rect(window, (200,200,200), pygame.Rect(150,150,300,300),)
 
 def redrawCircle(draw_text=False,win=False):
 	clearCircle()
-	#boat circle
-	pygame.draw.circle(window, (225, 0, 0), (int(width/2 + boatx),int(height/2 + boaty)), 6, 2)
-	#goblin circle
-	pygame.draw.circle(window, (0,0,0), (int(width/2 + radius*math.cos(goblin)),int(height/2 + radius*math.sin(goblin))), 6, 0) 
-
-	if draw_text:
-		font = pygame.font.Font(None, 72)
-		if win:
-			text = font.render("Escaped!", 1, (255, 255, 255))
-		else:
-			text = font.render("You Were Eaten", 1, (255, 0, 0))
-		textpos = text.get_rect()
-		textpos.centerx = window.get_rect().centerx
-		textpos.centery = height/2
-		window.blit(text, textpos)
-
-	font = pygame.font.Font(None, 48)
-	text = font.render("Goblin Speed: " + str(gspeeds[gspeed_ix]), 1, (255, 255, 255))
-	textpos = text.get_rect()
-	textpos.centerx = width/2
-	textpos.centery = height - 20
-	window.blit(text, textpos)
-	
-	pygame.display.flip()
-
-def redrawSquare(draw_text=False,win=False):
-	clearSquare()
 	#boat circle
 	pygame.draw.circle(window, (225, 0, 0), (int(width/2 + boatx),int(height/2 + boaty)), 6, 2)
 	#goblin circle
@@ -230,6 +201,123 @@ def circleGame():
 		redrawCircle()
 		clock.tick(60)
 
+
+
+##this begins the square portion of the game
+def clearSquare():
+	#window color
+	window.fill((222, 232, 252))
+	#lake Square
+	pygame.draw.rect(window, (115, 151, 193), pygame.Rect(width/2-100, height/2-100, 200, 200))
+
+def redrawSquare(draw_text=False,win=False):
+	clearSquare()
+	#boat Square
+	pygame.draw.circle(window, (255, 0, 0), (int(width/2 + boatx),int(height/2 + boaty)), 6, 2)
+	#goblin Square
+	pygame.draw.circle(window, (0,0,0), (int(width/2 + goblinx),int(height/2 + gobliny)), 6, 0) 
+
+	if draw_text:
+		font = pygame.font.Font(None, 72)
+		if win:
+			text = font.render("Escaped!", 1, (255, 255, 255))
+		else:
+			text = font.render("You Were Eaten", 1, (255, 0, 0))
+		textpos = text.get_rect()
+		textpos.centerx = window.get_rect().centerx
+		textpos.centery = height/2
+		window.blit(text, textpos)
+
+	font = pygame.font.Font(None, 48)
+	text = font.render("Goblin Speed: " + str(gspeeds[gspeed_ix]), 1, (255, 255, 255))
+	textpos = text.get_rect()
+	textpos.centerx = width/2
+	textpos.centery = height - 20
+	window.blit(text, textpos)
+	
+	pygame.display.flip()
+
+def updateGoblinSquare():
+	global boatx, boaty
+	gspeed = gspeeds[gspeed_ix]
+	#is it closer to a the left or right
+	#positive means that it is closer to left or right
+	diff = abs(boatx)-abs(boaty)
+	global gobliny, goblinx
+	if(diff>=0):
+		if(abs(goblinx)!=97.5):
+			print("getting1")
+			if(boatx<0):
+				goblinx-=gspeed
+			else:
+				goblinx+=gspeed
+		else:
+			print("getting2")
+			if((abs(gobliny-boaty)>1)):
+				if(gobliny<boaty):
+					print("getting3")
+					
+					gobliny+=gspeed
+				else:
+					print("getting4")
+					gobliny-=gspeed
+	else:
+		if(abs(gobliny)!=97.5):
+			print("getting1")
+			if(boaty<0):
+				gobliny-=gspeed
+			else:
+				gobliny+=gspeed
+		else:
+			print("getting2")
+			if((abs(goblinx-boatx)>1)):
+				if(goblinx<boatx):
+					print("getting3")
+					
+					goblinx+=gspeed
+				else:
+					print("getting4")
+					goblinx-=gspeed
+	if(goblinx>97.5):
+		goblinx=97.5
+	if(gobliny>97.5):
+		gobliny=97.5
+	if(goblinx<-97.5):
+		goblinx=-97.5
+	if(gobliny<-97.5):
+		gobliny=-97.5
+
+def moveBoat(x,y):
+	global boatx, boaty, goblinx, gobliny
+	dx = x - boatx
+	dy = y - boaty
+	mag = math.sqrt(dx*dx + dy*dy)
+	if mag <= bspeed * speed_mult:
+		boatx = x
+		boaty = y
+	else:
+		boatx += bspeed * speed_mult * dx/mag
+		boaty += bspeed * speed_mult * dy/mag 
+	
+def detectWinSquare():
+	global gspeed_ix
+	if boatx*boatx + boaty*boaty > radius*radius:
+		diff = math.atan2(boaty, boatx) - goblin
+		if diff < math.pi: diff += math.pi*2.0
+		if diff > math.pi: diff -= math.pi*2.0
+		while True:
+			is_win = abs(diff) > 0.000001
+			redrawSquare(True, is_win)
+			events = [event.type for event in pygame.event.get()]
+			if pygame.QUIT in events: 
+				sys.exit(0)
+			elif pygame.MOUSEBUTTONDOWN in events:
+				restart()
+				if is_win:
+					gspeed_ix += 1
+				break
+
+clock = pygame.time.Clock()
 def squareGame():
 	x = None
 	clicking = False
@@ -244,23 +332,20 @@ def squareGame():
 				global gspeed_ix
 				if event.key == pygame.K_BACKSPACE:
 					main_menu()
-				if event.key == 61:
-					if(gspeed_ix<len(gspeeds)-1):
-						gspeed_ix +=1
-						restart()
-				if event.key == 45:
-					if(gspeed_ix>0):
-						gspeed_ix -=1
-						restart()
+				if event.key == 61 and (gspeed_ix<len(gspeeds)-1):
+					gspeed_ix +=1
+					restart()
+				if event.key == 45 and gspeed_ix>0:
+					gspeed_ix -=1
+					restart()
 
 
 		if clicking:
 			x,y = pygame.mouse.get_pos()
 			moveBoat(x - width/2, y - height/2)
-		updateGoblin() #this is the actual game
-		detectWin() #this checks if we won or not
-		redrawSquare() #this is the method that changes the screens
+		updateGoblinSquare()
+		detectWinSquare()
+		redrawSquare()
 		clock.tick(60)
-
 
 main_menu()
