@@ -1,5 +1,6 @@
 # GoblinEscape
-Simple python game to avoid a goblin originally published by user Hackpoet.
+Simple pygame representation of a math puzzle.
+This is inspired and based off hackerpoets youtube video and github repository.
 
 To see what this code is about, check out Hackerpoet's video:
  - https://youtu.be/V0V3LMK40iI
