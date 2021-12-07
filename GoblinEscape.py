@@ -78,10 +78,12 @@ def main_menu():
 		pygame.display.update()
  
 def restart():
-	global goblin, boatx, boaty, clicking
+	global goblin, boatx, boaty, clicking, gobliny, goblinx
 	goblin = 0.0
 	boatx = 0.1 
 	boaty = 0.0
+	gobliny= 0
+	goblinx = 97.5
 	clicking = False
 
 pygame.init()
@@ -249,7 +251,7 @@ def updateGoblinSquare():
 			if(goblinx!=97.5 and abs(gobliny)!=97.5):
 				if(boaty>0):
 					gobliny+=gspeed
-				elif(boaty<=0):
+				elif(boaty<0):
 					gobliny-=gspeed
 			elif(goblinx!=97.5 and abs(gobliny)==97.5):
 				goblinx+=gspeed
@@ -262,7 +264,7 @@ def updateGoblinSquare():
 			if(goblinx!=-97.5 and abs(gobliny)!=97.5):
 				if(boaty>0):
 					gobliny+=gspeed
-				elif(boaty<=0):
+				elif(boaty<0):
 					gobliny-=gspeed
 			elif(goblinx!=-97.5 and abs(gobliny)==97.5):
 				goblinx-=gspeed
@@ -271,6 +273,14 @@ def updateGoblinSquare():
 					gobliny-=gspeed
 				elif(boaty>gobliny):
 					gobliny+=gspeed
+	if(goblinx>97.5):
+		goblinx = 97.5
+	if(goblinx<-97.5):
+		goblinx = -97.5
+	if(gobliny>97.5):
+		gobliny = 97.5
+	if(gobliny<-97.5):
+		gobliny = -97.5
 	elif(diff<0):
 		if(boaty>0):
 			if(gobliny!=97.5 and abs(goblinx)!=97.5):
@@ -314,12 +324,10 @@ def moveBoat(x,y):
 	
 def detectWinSquare():
 	global gspeed_ix
-	if boatx*boatx + boaty*boaty > radius*radius:
-		diff = math.atan2(boaty, boatx) - goblin
-		if diff < math.pi: diff += math.pi*2.0
-		if diff > math.pi: diff -= math.pi*2.0
+	if (abs(boatx)>= 96 or abs(boaty)>=96):
+		diff = (boatx-goblinx) + (boaty-gobliny)
 		while True:
-			is_win = abs(diff) > 0.000001
+			is_win = abs(diff) > 2
 			redrawSquare(True, is_win)
 			events = [event.type for event in pygame.event.get()]
 			if pygame.QUIT in events: 
