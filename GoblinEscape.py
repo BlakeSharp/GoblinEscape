@@ -87,6 +87,7 @@ def main_menu():
 		if button_3.collidepoint((mx, my)):
 			if click:
 				shape = 'triangle'
+				TriGame()
 		if button_4.collidepoint((mx, my)):
 			if click:
 				print ("later")
@@ -218,6 +219,8 @@ def moveBoat(x, y):
 	else:
 		boatx += bspeed * speed_mult * dx / mag
 		boaty += bspeed * speed_mult * dy / mag
+	print(boatx)
+	print(boaty)
 
 
 def detectWin():
@@ -416,6 +419,126 @@ def squareGame():
 		updateGoblinSquare()
 		detectWinSquare()
 		redrawSquare()
+		clock.tick(60)
+
+
+##this begins the triangle portion of the game
+
+def clearTri():
+
+	# window color
+
+	window.fill((222, 232, 252))
+
+	# lake Square
+
+	pygame.draw.polygon(surface=window, color=(115, 151, 193), points=[(112,250), (262,75), (412,250)])
+
+
+def redrawTri(draw_text=False, win=False):
+	clearTri()
+
+	# boat Square
+
+	pygame.draw.circle(window, (255, 0, 0), (int(width / 2 + boatx), int(height / 2 + boaty)), 6, 2)
+
+	# goblin Square
+
+	pygame.draw.circle(window, (0, 0, 0), (int(width / 2 + goblinx), int(height / 2 + gobliny)), 6, 0)
+
+	if draw_text:
+		font = pygame.font.Font(None, 72)
+		if win:
+			text = font.render('Escaped!', 1, (255, 255, 255))
+		else:
+			text = font.render('You Were Eaten', 1, (255, 0, 0))
+		textpos = text.get_rect()
+		textpos.centerx = window.get_rect().centerx
+		textpos.centery = height / 2
+		window.blit(text, textpos)
+
+	font = pygame.font.Font(None, 48)
+	text = font.render('Goblin Speed: ' + str(gspeeds[gspeed_ix]), 1,
+					   (255, 255, 255))
+	textpos = text.get_rect()
+	textpos.centerx = width / 2
+	textpos.centery = height - 20
+	window.blit(text, textpos)
+
+	pygame.display.flip()
+
+
+def updateGoblinTri():
+	global boatx, boaty
+	gspeed = gspeeds[gspeed_ix]
+	#is it closer to a the left or right
+	#positive means that it is closer to left or right
+
+	#equation : y = +-31/148(goblinx+-gspeed) - 100
+	diff = boaty+abs(boatx)
+	global gobliny, goblinx
+	if(boaty<0 and diff>0):
+		if(gobliny>-112):
+			print("oaisjdsaoij")
+	#if it is in the upper right portion
+	if(diff>0 and boatx>0):
+		if()
+	#if it is in the upper left portion
+	if(diff>0 and boatx<0):
+
+	
+
+	
+def detectWinTri():
+	global gspeed_ix
+	if abs(boatx) >= 1000 or abs(boaty) >= 1000:
+		diff = boatx - goblinx + boaty - gobliny
+		while True:
+			is_win = abs(diff) > 10
+			redrawSquare(True, is_win)
+			events = [event.type for event in pygame.event.get()]
+			if pygame.QUIT in events:
+				sys.exit(0)
+			elif pygame.MOUSEBUTTONDOWN in events:
+				restart()
+				break
+
+
+clock = pygame.time.Clock()
+
+
+def TriGame():
+	x = None
+	clicking = False
+	global goblinx, gobliny
+	goblinx=3
+	gobliny = -100
+	global speed_mult, gspeed_ix
+	speed_mult = 3.0
+	
+	while True:
+		for event in pygame.event.get():
+			if event.type == pygame.QUIT:
+				sys.exit(0)
+			clicking = pygame.mouse.get_pressed()[0]
+			if pygame.mouse.get_pressed()[2]:
+				restart()
+			if event.type == pygame.KEYDOWN:
+				if event.key == pygame.K_BACKSPACE:
+					main_menu()
+				if event.key == 61 and gspeed_ix < len(gspeeds) - 1:
+					gspeed_ix += 1
+					restart()
+				if event.key == 45 and gspeed_ix > 0:
+					gspeed_ix -= 1
+					restart()
+
+		if clicking:
+			(x, y) = pygame.mouse.get_pos()
+			moveBoat(x - width / 2, y - height / 2)
+		updateGoblinTri()
+		detectWinTri()
+		redrawTri()
 		clock.tick(60)
 
 
