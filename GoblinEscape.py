@@ -247,6 +247,8 @@ clock = pygame.time.Clock()
 def circleGame():
 	x = None
 	clicking = False
+	global speed_mult
+	speed_mult = 3.0
 	while True:
 		for event in pygame.event.get():
 			if event.type == pygame.QUIT:
