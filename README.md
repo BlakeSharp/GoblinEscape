@@ -24,9 +24,8 @@ You could also create a .bat or .sh file to more easily run it from the GUI.
 Improvements upon Hackpoet's original code include:
 - A main menu
 - A settings page
-  - Resolution selection
   - WASD movement option
-  - Controls
+  - List of controls
 - Additional shapes
 - Color scheme change
 - ability to manipulate goblin speed
