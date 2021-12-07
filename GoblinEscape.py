@@ -245,47 +245,60 @@ def updateGoblinSquare():
 	diff = abs(boatx)-abs(boaty)
 	global gobliny, goblinx
 	if(diff>=0):
-		if(abs(goblinx)!=97.5):
-			print("getting1")
-			if(boatx<0):
-				goblinx-=gspeed
-			else:
-				goblinx+=gspeed
-		else:
-			print("getting2")
-			if((abs(gobliny-boaty)>1)):
-				if(gobliny<boaty):
-					print("getting3")
-					
+		if(boatx>0):
+			if(goblinx!=97.5 and abs(gobliny)!=97.5):
+				if(boaty>0):
 					gobliny+=gspeed
-				else:
-					print("getting4")
+				elif(boaty<=0):
 					gobliny-=gspeed
-	else:
-		if(abs(gobliny)!=97.5):
-			print("getting1")
-			if(boaty<0):
-				gobliny-=gspeed
-			else:
-				gobliny+=gspeed
-		else:
-			print("getting2")
-			if((abs(goblinx-boatx)>1)):
-				if(goblinx<boatx):
-					print("getting3")
-					
+			elif(goblinx!=97.5 and abs(gobliny)==97.5):
+				goblinx+=gspeed
+			elif(goblinx==97.5):
+				if(boaty<gobliny):
+					gobliny-=gspeed
+				elif(boaty>gobliny):
+					gobliny+=gspeed
+		elif(boatx<0):
+			if(goblinx!=-97.5 and abs(gobliny)!=97.5):
+				if(boaty>0):
+					gobliny+=gspeed
+				elif(boaty<=0):
+					gobliny-=gspeed
+			elif(goblinx!=-97.5 and abs(gobliny)==97.5):
+				goblinx-=gspeed
+			elif(goblinx==-97.5):
+				if(boaty<gobliny):
+					gobliny-=gspeed
+				elif(boaty>gobliny):
+					gobliny+=gspeed
+	elif(diff<0):
+		if(boaty>0):
+			if(gobliny!=97.5 and abs(goblinx)!=97.5):
+				if(boatx>0):
 					goblinx+=gspeed
-				else:
-					print("getting4")
+				elif(boatx<=0):
 					goblinx-=gspeed
-	if(goblinx>97.5):
-		goblinx=97.5
-	if(gobliny>97.5):
-		gobliny=97.5
-	if(goblinx<-97.5):
-		goblinx=-97.5
-	if(gobliny<-97.5):
-		gobliny=-97.5
+			elif(gobliny!=97.5 and abs(goblinx)==97.5):
+				gobliny+=gspeed
+			elif(gobliny==97.5):
+				if(boatx<goblinx):
+					goblinx-=gspeed
+				elif(boatx>goblinx):
+					goblinx+=gspeed
+		elif(boaty<0):
+			if(gobliny!=-97.5 and abs(goblinx)!=97.5):
+				if(boatx>0):
+					goblinx+=gspeed
+				elif(boatx<=0):
+					goblinx-=gspeed
+			elif(gobliny!=-97.5 and abs(goblinx)==97.5):
+				gobliny-=gspeed
+			elif(gobliny==-97.5):
+				if(boatx<goblinx):
+					goblinx-=gspeed
+				elif(boatx>goblinx):
+					goblinx+=gspeed
+
 
 def moveBoat(x,y):
 	global boatx, boaty, goblinx, gobliny
