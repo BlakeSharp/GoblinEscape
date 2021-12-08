@@ -478,17 +478,23 @@ def updateGoblinTri():
 	diff = boaty-abs(boatx)
 	global gobliny, goblinx
 	print(str(diff) + " diff | boat y " + str(boaty) + " | boat x " + str(boatx) + " | goblin x " + str(goblinx)  + " | gobliny " + str(gobliny))
-	if(boaty>0 and diff>0):
+	if(boaty>0 and diff>-50):
 		#if its not on the bottom line
-		if(gobliny<100):
+		if(gobliny<70):
 			if(goblinx<0):
-				goblinx +=gspeed
-				gobliny = (-.5)*(goblinx)
+				goblinx -=gspeed
+				gobliny = ((-1.1)*(goblinx))-100
 			elif goblinx>=0:
-				goblinx -= gspeed
-				gobliny = (-.5)*(goblinx)
-	#if it is in the upper right portion
-
+				goblinx +=gspeed
+				gobliny = ((1.1)*(goblinx))-100
+		if(gobliny>=70 and abs(goblinx-boatx)>5):
+			if(boatx>goblinx):
+				goblinx+=gspeed
+			elif(boatx<goblinx):
+				goblinx-=gspeed
+	#if the boat is on the left
+	if(boatx>0):
+		
 
 	
 
@@ -515,7 +521,7 @@ def TriGame():
 	x = None
 	clicking = False
 	global goblinx, gobliny
-	goblinx=3
+	goblinx=1
 	gobliny = -100
 	global speed_mult, gspeed_ix
 	speed_mult = 3.0
