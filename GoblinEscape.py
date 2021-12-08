@@ -494,18 +494,20 @@ def updateGoblinTri():
 				goblinx-=gspeed
 	#if the boat is on the left
 	if(boatx>0):
-		
+		print("thing")
+
 
 	
 
 	
 def detectWinTri():
 	global gspeed_ix
-	if abs(boatx) >= 1000 or abs(boaty) >= 1000:
-		diff = boatx - goblinx + boaty - gobliny
+	thing = False
+	diff = abs(boatx-goblinx) + abs(boaty-gobliny)
+	if (boaty>=71) or (boaty<=(1.1)*(boatx)-100 and boatx>=0) or (boaty<=(-1.1)*(boatx)-100 and boatx<0):
 		while True:
 			is_win = abs(diff) > 10
-			redrawSquare(True, is_win)
+			redrawTri(True, is_win)
 			events = [event.type for event in pygame.event.get()]
 			if pygame.QUIT in events:
 				sys.exit(0)
