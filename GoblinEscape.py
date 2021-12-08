@@ -475,16 +475,20 @@ def updateGoblinTri():
 	#positive means that it is closer to left or right
 
 	#equation : y = +-31/148(goblinx+-gspeed) - 100
-	diff = boaty+abs(boatx)
+	diff = boaty-abs(boatx)
 	global gobliny, goblinx
-	if(boaty<0 and diff>0):
-		if(gobliny>-112):
-			print("oaisjdsaoij")
+	print(str(diff) + " diff | boat y " + str(boaty) + " | boat x " + str(boatx) + " | goblin x " + str(goblinx)  + " | gobliny " + str(gobliny))
+	if(boaty>0 and diff>0):
+		#if its not on the bottom line
+		if(gobliny<100):
+			if(goblinx<0):
+				goblinx +=gspeed
+				gobliny = (-.5)*(goblinx)
+			elif goblinx>=0:
+				goblinx -= gspeed
+				gobliny = (-.5)*(goblinx)
 	#if it is in the upper right portion
-	if(diff>0 and boatx>0):
-		if()
-	#if it is in the upper left portion
-	if(diff>0 and boatx<0):
+
 
 	
 
