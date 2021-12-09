@@ -61,6 +61,14 @@ def draw_text(
 def main_menu():
 
 	while True:
+		click = False
+		for event in pygame.event.get():
+			if event.type == pygame.QUIT:
+				pygame.quit()
+				sys.exit()
+			if event.type == pygame.MOUSEBUTTONDOWN:
+				if event.button == 1:
+					click = True
 		font = pygame.font.SysFont('Corbel', 50)
 		window.fill((222, 232, 252))
 		draw_text(
@@ -80,15 +88,12 @@ def main_menu():
 		global shape
 		if button_1.collidepoint((mx, my)):
 			if click:
-				shape = 'circle'
 				circleGame()
 		if button_2.collidepoint((mx, my)):
 			if click:
-				shape = 'square'
 				squareGame()
 		if button_3.collidepoint((mx, my)):
 			if click:
-				shape = 'triangle'
 				TriGame()
 		if button_4.collidepoint((mx, my)):
 			if click:
@@ -113,14 +118,6 @@ def main_menu():
 			232,
 			)
 
-		click = False
-		for event in pygame.event.get():
-			if event.type == pygame.QUIT:
-				pygame.quit()
-				sys.exit()
-			if event.type == pygame.MOUSEBUTTONDOWN:
-				if event.button == 1:
-					click = True
 
 		pygame.display.update()
 
