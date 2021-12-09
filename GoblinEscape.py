@@ -28,7 +28,7 @@ gspeeds = [
 	]
 gspeed_ix = 0
 speed_mult = 3.0
-
+wasd = False
 # game click
 
 clicking = False
@@ -40,6 +40,9 @@ Shape = None
 goblinx = 97.5
 gobliny = 0.0
 
+pygame.init()
+window = pygame.display.set_mode((width, height))
+pygame.display.set_caption('Goblin Game')
 
 def draw_text(
 	text,
@@ -68,7 +71,6 @@ def main_menu():
 			width / 2 - 90,
 			20,
 			)
-
 		(mx, my) = pygame.mouse.get_pos()
 		font = pygame.font.SysFont('Corbel', 30)
 		button_1 = pygame.Rect(65, 110, 150, 75)
@@ -90,7 +92,7 @@ def main_menu():
 				TriGame()
 		if button_4.collidepoint((mx, my)):
 			if click:
-				print ("later")
+				helpmenu()
 		pygame.draw.rect(window, (115, 151, 193), button_1)
 		pygame.draw.rect(window, (115, 151, 193), button_2)
 		pygame.draw.rect(window, (115, 151, 193), button_3)
@@ -132,11 +134,34 @@ def restart():
 	goblinx = 97.5
 	clicking = False
 
-
-pygame.init()
-window = pygame.display.set_mode((width, height))
-pygame.display.set_caption('Goblin Game')
-
+def helpmenu():
+	while True:
+		for event in pygame.event.get():
+			if event.type == pygame.QUIT:
+				sys.exit(0)
+			if event.type == pygame.KEYDOWN:
+				if event.key == pygame.K_BACKSPACE:
+					main_menu()
+		font = pygame.font.SysFont('Corbel', 50)
+		window.fill((222, 232, 252))
+		text = font.render('HELP MENU', 1, (115, 151, 193))
+		window.blit(text, (width / 2 - 90,20))
+		font = pygame.font.SysFont('Corbel', 30)
+		text2 = font.render('W,A,S,D : UP,DOWN,LEFT,RIGHT', 1, (115, 151, 193))
+		window.blit(text2, (100,125))
+		text3 = font.render('HOLD LEFT CLICK : BOAT FOLLOWS CURSOR', 1, (115, 151, 193))
+		window.blit(text3, (35,175))
+		text4 = font.render('BACKSPACE : RETURN TO MAIN MENU', 1, (115, 151, 193))
+		window.blit(text4, (60,225))
+		text4 = font.render('+,- : INCREASE/DECREASE GOBLIN SPEED', 1, (115, 151, 193))
+		window.blit(text4, (50,275))
+		font = pygame.font.SysFont('Corbel', 15)
+		text5 = font.render('THE OBJECTIVE IS TO GET THE BOAT (THE BLACK CIRCLE) TO SHORE ', 1, (115, 151, 193))
+		window.blit(text5, (90,70))
+		text6 = font.render('(THE LIGHT BLUE REGION) WITHOUT BEING CAUGHT BY THE GOBLIN (THE RED DOT).', 1, (115, 151, 193))
+		window.blit(text6, (50,90))
+		pygame.display.update()
+#(THE LIGHT BLUE REGION) WITHOUT BEING CAUGHT BY THE GOBLIN (THE RED DOT).
 
 ##this is all the circle portion of the code
 def clearCircle():
@@ -158,11 +183,11 @@ def redrawCircle(draw_text=False, win=False):
 	clearCircle()
 
 	# boat circle
-	pygame.draw.circle(window, (225, 0, 0), (int(width / 2 + boatx),
+	pygame.draw.circle(window, (0, 0, 0), (int(width / 2 + boatx),
 					   int(height / 2 + boaty)), 6, 2)
 
 	# goblin circle
-	pygame.draw.circle(window, (0, 0, 0), (int(width / 2 + radius
+	pygame.draw.circle(window, (225, 0, 0), (int(width / 2 + radius
 					   * math.cos(goblin)), int(height / 2 + radius
 					   * math.sin(goblin))), 6, 0)
 
@@ -219,8 +244,6 @@ def moveBoat(x, y):
 	else:
 		boatx += bspeed * speed_mult * dx / mag
 		boaty += bspeed * speed_mult * dy / mag
-	print(boatx)
-	print(boaty)
 
 
 def detectWin():
@@ -440,11 +463,11 @@ def redrawTri(draw_text=False, win=False):
 
 	# boat Square
 
-	pygame.draw.circle(window, (255, 0, 0), (int(width / 2 + boatx), int(height / 2 + boaty)), 6, 2)
+	pygame.draw.circle(window, (0, 0, 0), (int(width / 2 + boatx), int(height / 2 + boaty)), 6, 2)
 
 	# goblin Square
 
-	pygame.draw.circle(window, (0, 0, 0), (int(width / 2 + goblinx), int(height / 2 + gobliny)), 6, 0)
+	pygame.draw.circle(window, (255, 0, 0), (int(width / 2 + goblinx), int(height / 2 + gobliny)), 6, 0)
 
 	if draw_text:
 		font = pygame.font.Font(None, 72)
