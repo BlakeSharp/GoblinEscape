@@ -497,24 +497,29 @@ def updateGoblinTri():
 	#equation : y = +-31/148(goblinx+-gspeed) - 100
 	diff = boaty-abs(boatx)
 	global gobliny, goblinx
-	print(str(diff) + " diff | boat y " + str(boaty) + " | boat x " + str(boatx) + " | goblin x " + str(goblinx)  + " | gobliny " + str(gobliny))
 	if(boaty>0 and diff>-50):
 		#if its not on the bottom line
 		if(gobliny<70):
-			if(goblinx<0):
-				goblinx -=gspeed
-				gobliny = ((-1.1)*(goblinx))-100
-			elif goblinx>=0:
-				goblinx +=gspeed
-				gobliny = ((1.1)*(goblinx))-100
+			if(goblinx<0):goblinx -=gspeed;gobliny = ((-1.1)*(goblinx))-100
+			elif goblinx>=0:goblinx +=gspeed;gobliny = ((1.1)*(goblinx))-100
 		if(gobliny>=70 and abs(goblinx-boatx)>5):
-			if(boatx>goblinx):
-				goblinx+=gspeed
-			elif(boatx<goblinx):
-				goblinx-=gspeed
+			if(boatx>goblinx):goblinx+=gspeed
+			elif(boatx<goblinx):goblinx-=gspeed
+	elif(boatx>0):
+		if(((goblinx>=0 and gobliny<=70) or (gobliny>=70 and  goblinx>=145))and boaty<=gobliny):
+			goblinx-=gspeed;gobliny = ((1.1)*(goblinx))-100
+		elif(gobliny>=70):goblinx+=gspeed;
+		elif(goblinx>=0 and gobliny<boaty):goblinx +=gspeed;gobliny = ((1.1)*(goblinx))-100
+		elif(goblinx<=0):goblinx+=gspeed;gobliny = ((-1.1)*(goblinx))-100
+	elif(boatx<0):
+		if(((goblinx<=0 and gobliny<=70) or (gobliny>=70 and  goblinx<=-150))and boaty<=gobliny):
+			goblinx+=gspeed;gobliny = ((-1.1)*(goblinx))-100
+		elif(gobliny>=70):goblinx-=gspeed
+		elif(goblinx<=0 and gobliny<boaty):goblinx -=gspeed;gobliny = ((-1.1)*(goblinx))-100
+		elif(goblinx>=0):goblinx-=gspeed;gobliny = ((1.1)*(goblinx))-100;
+		
 	#if the boat is on the left
-	if(boatx>0):
-		print("thing")
+		
 
 
 	
